@@ -1,0 +1,34 @@
+Vue
+
+一个组件的 data 选项必须是一个函数,这样每用一次组件，每个实例都可以维护一份被返回对象的独立的拷贝。其中一个实例发生变化时不会影响其他实例。
+
+在组件上使用v-model
+<input v-model="searchText">
+等价于
+<input
+  v-bind:value="searchText"
+  v-on:input="searchText = $event.target.value"
+>
+当用在组件上时，会这样：
+<custom-input
+  v-bind:value="searchText"
+  v-on:input="searchText = $event"
+></custom-input>
+为使v-model在组件中正常工作，组件内更改如下：
+Vue.component('custom-input', {
+  props: ['value'],
+  template: `
+    <input
+      v-bind:value="value"
+      v-on:input="$emit('input', $event.target.value)"
+    >
+  `
+})
+
+vue组件之间通信的方法
+1.父子组件传递，父向子传递采用props，子向父采用事件emit
+2.非父子组件的传递，全局Event bus，new一个vue的实例，采用事件的方式通信，再者采用vuex全局状态管理
+prop 默认是单向绑定：当父组件的属性变化时，将传导给子组件，但是反过来不会。这是为了防止子组件无意修改了父组件的状态——这会让应用的数据流难以理解。
+
+export default {} 
+在复用组件的时候使用。假设我们写了一个单页面组件 A 文件，而在另一个文件 B 里面需要用到它，那么就要用 ES6 的 import/export 语法 ，在文件 A 中定义输出接口 export **，在文件 B 中引入 import **，然后再生成一个 Vue 实例 new Vue (**)，把引入的组件用起来，这样就可以复用组件 A 去配合文件 B 生成 html 页面了。
