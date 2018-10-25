@@ -1,10 +1,3 @@
----
-title:        福建免费教材管理系统
-createTime:   2018-01-29
-author:       匡焕
----
-
-# large_customers
 
 > 全民阅读后台
 
